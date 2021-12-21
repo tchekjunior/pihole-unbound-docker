@@ -1,2 +1,2 @@
 
-Docker-compose implementation of docker pi-hole and custom alpine unbound containers for DNSSEC + adblocking
+Dockerfile implementation of image pi-hole and custom unbound 
