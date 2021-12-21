@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  pihole_unbound:
+    container_name: pihole_unbound
+    build:
+      context: ./../
+      dockerfile: Dockerfile
+    image: pihole_unbound:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "80:80/tcp"
+      # - 5335:5335/tcp # Uncomment to enable unbound access on local server
+    networks:
+      default:
+        ipv4_address: 172.28.0.3
+    environment:
+      TZ: "America/Chicago"
+      PIHOLE_DNS: "172.28.0.2;172.28.0.2"
+    volumes:
+      - "./docker-data/pihole:/etc/pihole"
+      - "./docker-data/dnsmasq:/etc/dnsmasq.d"
+      - "./docker-data/unbound:/etc/unbound"
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped 
+  
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.28.0.0/24
+        gateway: 172.28.0.1
